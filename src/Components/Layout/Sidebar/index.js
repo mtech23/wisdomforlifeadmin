@@ -154,14 +154,14 @@ export const Sidebar = (props) => {
 
 
 
-        <li className="sidebar-li">
+        {/* <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('#') ? 'active' : ''}`} to="#">
             <span className="sideIcon">
               <FontAwesomeIcon icon={faMessage} />
             </span>
             <span className="sideLinkText"> Cart Management   </span>
           </Link>
-        </li>
+        </li> */}
 
 
 
