@@ -21,7 +21,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Link, useParams } from "react-router-dom";
 export function MyProfile() {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState([]);
   const [editUser, setEditUser] = useState(false);
   const baseurl = `${process.env.REACT_APP_API_URL}/public/`;
 
@@ -72,17 +72,57 @@ export function MyProfile() {
   //       console.error("Error fetching data:", error);
   //     }
   //   };
+  // const filehandleChange = (event) => {
+  //   const file = event.target.files[0];
+  //   // console.log(file.name)
+  //   if (file) {
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       image: file,
+  //     }));
+  //   }
+  //   console.log(formData);
+  // };
+
+
+
+
+
+
+
+
+  // const filehandleChange = (event) => {
+  //   const file = event.target.files[0];
+  //   // console.log(file.name)
+  //   if (file) {
+  //     const fileName = file;
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       ad_image: fileName,
+  //     }));
+  //   }
+  //   console.log(formData)
+  // };
+
+
+
+
+
+
+
+
+  
   const filehandleChange = (event) => {
     const file = event.target.files[0];
-    // console.log(file.name)
-    if (file) {
-      setFormData((prevData) => ({
-        ...prevData,
-        image: file,
-      }));
-    }
-    console.log(formData);
-  };
+     if (file) {
+        const fileName = file;
+        setFormData((prevData) => ({
+            ...prevData,
+            image: fileName,
+        }));
+    } 
+};
+  
   const fetchprofile = () => {
     const datas = process.env.REACT_APP_API_URL;
     console.log("datas", datas);
@@ -236,7 +276,7 @@ export function MyProfile() {
             <div className="row mt-3">
               <div className="col-xl-6 col-lg-6 mb-4">
                 <CustomInput
-                  label="  Edit Image"
+                  label="Edit Image"
                   type="file"
                   required
                   name="image"

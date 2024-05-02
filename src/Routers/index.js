@@ -40,6 +40,25 @@ import { AddCourse } from "../Screens/CourseManagement/AddCourse";
 
 
 
+
+import { QuizList } from "../Screens/QuizManagement/index";
+import { QuizDateil } from "../Screens/QuizManagement/Quizdateil";
+import { EditQuiz } from "../Screens/QuizManagement/EditQuiz";
+import { AddQuiz } from "../Screens/QuizManagement/AddQuiz";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import { PromoList } from "../Screens/PromoCodeManagement/index";
 import { PromoDateil } from "../Screens/PromoCodeManagement/Promodateil";
 import { EditPromo } from "../Screens/PromoCodeManagement/EditPromo";
@@ -147,6 +166,17 @@ export default function AdminRouter() {
           element={<ProtectedRoutes Components={ProfileDateil} />}
         />
 
+
+
+
+
+
+
+
+
+
+
+
         <Route
           path="/course-management"
           element={<ProtectedRoutes Components={CourseList} />}
@@ -162,6 +192,42 @@ export default function AdminRouter() {
         <Route
           path="/course-management/edit-course/:id"
           element={<ProtectedRoutes Components={EditCourse} />}
+        />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<Route
+          path="/quiz-management"
+          element={<ProtectedRoutes Components={QuizList} />}
+        />
+        <Route
+          path="/add-quiz"
+          element={<ProtectedRoutes Components={AddQuiz} />}
+        />
+        <Route
+          path="/quiz-management/quiz-details/:id"
+          element={<ProtectedRoutes Components={QuizDateil} />}
+        />
+        <Route
+          path="/quiz-management/edit-quiz/:id"
+          element={<ProtectedRoutes Components={EditQuiz} />}
         />
 
 

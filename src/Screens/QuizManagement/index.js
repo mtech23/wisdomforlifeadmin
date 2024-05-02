@@ -16,7 +16,7 @@ import CustomButton from "../../Components/CustomButton";
 
 import "./style.css";
 
-export const UserManagement = () => {
+export const QuizList = () => {
   const base_url =  process.env.REACT_APP_API_URL
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -50,7 +50,7 @@ export const UserManagement = () => {
   }
 console.log("data" , data)
   const filterData = data?.filter(item =>
-    item?.name?.toLowerCase().includes(inputValue.toLowerCase())
+    item?.course_name?.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -58,13 +58,13 @@ console.log("data" , data)
   const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
 
 
-  const Userlisting = () => {
+  const Quizlisting = () => {
 const datas = process.env.REACT_APP_API_URL
  console.log("datas" , datas)
     const LogoutData = localStorage.getItem('login');
    
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch(`${process.env.REACT_APP_API_URL}api/admin/user-listing`,
+    fetch(`${process.env.REACT_APP_API_URL}api/admin/course-listing`,
       {
         method: 'GET',
         headers: {
@@ -91,8 +91,8 @@ const datas = process.env.REACT_APP_API_URL
   }
 
   useEffect(() => {
- 
-    Userlisting()
+    document.title = 'Wisdon For Life Admin | Quiz Management';
+    Quizlisting()
 
   }, []);
 
@@ -102,30 +102,37 @@ const datas = process.env.REACT_APP_API_URL
       title: "S.No",
     },
     {
-      key: "username",
-      title: "User Name",
+      key: "image",
+      title: "Image",
     },
 
     {
-      key: "Eamil Price",
-      title: "Email Price",
+      key: "username",
+      title: "Quiz Name",
+    },
+
+    {
+      key: "course Price",
+      title: "course Price",
     },
     {
-      key: "Phone Number ",
-      title: "Phone Number ",
+      key: "Start date ",
+      title: "Start date ",
     },
-  
-  
+    {
+      key: "course duration ",
+      title: "course duration ",
+    },
     {
       key: "action",
       title: "Action",
     },
   ];
 
-  const DeleteUser = (catId) => {
+  const DeleteQuiz = (catId) => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch(`${process.env.REACT_APP_API_URL}api/admin/user-delete/${catId}`,
+    fetch(`${process.env.REACT_APP_API_URL}api/admin/course-delete/${catId}`,
       {
         method: 'POST',
         headers: {
@@ -142,7 +149,7 @@ const datas = process.env.REACT_APP_API_URL
       .then((data) => {
         console.log(data)
         document.querySelector('.loaderBox').classList.add("d-none");
-        // Userlisting()
+        Quizlisting()
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -150,7 +157,7 @@ const datas = process.env.REACT_APP_API_URL
       })
   }
   const hanldeRoute = () => {
-    navigate('/add-course')
+    navigate('/add-quiz')
   }
 
 console.log("currentItems" , currentItems)
@@ -163,10 +170,15 @@ console.log("currentItems" , currentItems)
               <div className="dashCard">
                 <div className="row mb-3 justify-content-between">
                   <div className="col-md-4 mb-2">
-                    <h2 className="mainTitle">User Management</h2>
+                    <h2 className="mainTitle">Quiz Management</h2>
                   </div>
                   <div className="col-md-6 mb-2">
- 
+
+                    <div className="addUser d-flex  mx-auto ">
+                      <CustomButton text="Add Quiz" variant='primaryButton' onClick={hanldeRoute} />
+                      <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} className=" w-auto "/>
+                    </div>
+
                   </div>
                 </div>
                 <div className="row mb-3">
@@ -179,12 +191,13 @@ console.log("currentItems" , currentItems)
                         {currentItems?.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            {/* <td><img src={base_url + item?.image} className="avatarIcon" /></td> */}
-                            <td className="text-capitalize">{item?.name == null ? 'No name Available' : item?.name}</td>
+                            <td><img src={base_url + item?.image} className="avatarIcon" /></td>
+                            <td className="text-capitalize">{item?.course_name == null ? 'No name Available' : item?.course_name}</td>
                             
-                            <td>{item?.email}</td>
-                            <td>{item?.phone_number}</td>
-                               
+                            <td>{item?.course_price}</td>
+                            <td>{item?.course_start_date}</td>
+                            <td>{item?.course_duration}</td>
+                             
                             {/* <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
                               <Dropdown className="tableDropdown">
@@ -193,16 +206,16 @@ console.log("currentItems" , currentItems)
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
 
-                                  <Link to={`/user-management/user-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
-                                  {/* <Link to={`/course-management/edit-course/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link> */}
-                                  <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={DeleteUser(item?.id)}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
-                                  {/* <button
+                                  <Link to={`/course-management/course-details/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
+                                  <Link to={`/course-management/edit-course/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
+                                  {/* <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={DeleteQuiz(item?.id)}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button> */}
+                                  <button
                                     type="button"
                                     className="bg-transparent border-0 ps-lg-3 pt-1"
-                                    onClick={() => DeleteUser(item?.id)}
+                                    onClick={() => DeleteQuiz(item?.id)}
                                   >
                                     <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete
-                                  </button> */}
+                                  </button>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -223,7 +236,6 @@ console.log("currentItems" , currentItems)
           </div>
 
           <CustomModal show={showModal} close={() => { setShowModal(false) }} action={inActive} heading='Are you sure you want to mark this user as inactive?' />
-
           <CustomModal show={showModal2} close={() => { setShowModal2(false) }} success heading='Marked as Inactive' />
 
           <CustomModal show={showModal3} close={() => { setShowModal3(false) }} action={ActiveMale} heading='Are you sure you want to mark this user as Active?' />
