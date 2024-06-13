@@ -10,7 +10,9 @@ export const AddCourse = () => {
   const [unit, setUnit] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    image: "", // Initialize image as an empty string
+    course_file: null,
+    image: null,
+    course_demo_video: null,
   });
 
   // const handleChange = (event) => {
@@ -38,13 +40,27 @@ export const AddCourse = () => {
   };
 
   const filehandleChange = (event) => {
-    const file = event.target.files[0];
+    // const file = event.target.files[0];
+    // // console.log(file.name)
+    // if (file) {
+    //   const fileName = file;
+    //   setFormData((prevData) => ({
+    //     ...prevData,
+    //     image: fileName,
+    //   }));
+    // }
+    // console.log(formData);
+
+
+
+    const file = event.target.files[0]
+    
+    const { name, value } = event.target;
     // console.log(file.name)
     if (file) {
-      const fileName = file;
       setFormData((prevData) => ({
         ...prevData,
-        image: fileName,
+        [name]: file,
       }));
     }
     console.log(formData);

@@ -108,7 +108,7 @@ export const Dashboard = () => {
     document.title = 'Wisdom For Life Admin | User Management';
     const LogoutData = localStorage.getItem('login');
 
-    fetch(`${base_url}/api/user/view_userdetails`,
+    fetch(`${base_url}api/user/view_userdetails`,
       {
         method: 'GET',
         headers: {

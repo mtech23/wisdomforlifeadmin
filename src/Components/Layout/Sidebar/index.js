@@ -65,14 +65,14 @@ export const Sidebar = (props) => {
         </li>
 
 
-        <li className="sidebar-li">
+        {/* <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('#') ? 'active' : ''}`} to="#">
             <span className="sideIcon">
               <FontAwesomeIcon icon={faMessage} />
             </span>
             <span className="sideLinkText"> Board Management   </span>
           </Link>
-        </li>
+        </li> */}
 
 
 
@@ -112,25 +112,25 @@ export const Sidebar = (props) => {
         </li>
 
  
-        <li className="sidebar-li">
+        {/* <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('/student-management') ? 'active' : ''}`} to="/student-management">
             <span className="sideIcon">
               <FontAwesomeIcon icon={faEye} />
             </span>
             <span className="sideLinkText">Student Management</span>
           </Link>
-        </li>
+        </li> */}
 
 
 
-        <li className="sidebar-li">
+        {/* <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('#') ? 'active' : ''}`} to="#">
             <span className="sideIcon">
               <FontAwesomeIcon icon={faMessage} />
             </span>
             <span className="sideLinkText">Personal Notes Management</span>
           </Link>
-        </li>
+        </li> */}
 
 
 

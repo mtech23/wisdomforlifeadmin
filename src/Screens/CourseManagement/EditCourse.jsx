@@ -14,8 +14,13 @@ export const EditCourse = () => {
   const [categories, setCategories] = useState({});
   const [unit, setUnit] = useState({});
   const [showModal, setShowModal] = useState(false);
+  // const [formData, setFormData] = useState({
+  //   image: null,
+  // });
   const [formData, setFormData] = useState({
+    course_file: null,
     image: null,
+    course_demo_video: null,
   });
 
   const Base_url = process.env.REACT_APP_API_URL;
@@ -85,8 +90,65 @@ export const EditCourse = () => {
     console.log(formData);
   };
 
-  const filehandleChange = (event) => {
-    const file = event.target.files[0];
+  const filehandlevideo = (event) => {
+    const file = event.target.files[0]
+    
+    const { name, value } = event.target;
+    // console.log(file.name)
+    if (file) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: file,
+      }));
+    }
+    console.log(formData);
+  };
+  // const filehandlecourseimg = (event) => {
+  //   const file = event.target.files[0]
+  //   // console.log(file.name)
+  //   if (file) {
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       image: file,
+  //     }));
+  //   }
+  //   console.log(formData);
+  // };
+
+
+  // const filehandlecourseimg = (event) => {
+  //   const files = event.target.files; // Assuming this is an array of files
+  //   if (files && files.length > 0) {
+  //     // Map through the array of files
+  //     const updatedFormData = Array.from(files).map((file, index) => ({
+  //       name: file.name,
+  //       type: file.type,
+  //       size: file.size,
+  //       file: file, // You can omit this if not needed
+  //     }));
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       images: updatedFormData, // Assuming you have a state property named "images" to hold multiple files
+  //     }));
+  //   }
+  //   console.log(formData);
+  // };
+  
+
+  // const filehandlecourseimg = (event, fileType) => {
+  //   const files = event.target.files;
+  //   if (files.length > 0) {
+  //     setFormData((prevData) => ({
+  //       ...prevData,
+  //       [fileType]:  files,
+  //     }));
+  //   }
+  // };
+
+
+
+  const filehandlefile = (event) => {
+    const file = event.target.files[0]
     // console.log(file.name)
     if (file) {
       setFormData((prevData) => ({
@@ -96,7 +158,7 @@ export const EditCourse = () => {
     }
     console.log(formData);
   };
-
+  console.log(formData);
   const LogoutData = localStorage.getItem("login");
 
   const handleSubmit = (event) => {
@@ -107,11 +169,12 @@ export const EditCourse = () => {
     for (const key in formData) {
       formDataMethod.append(key, formData[key]);
     }
+    formDataMethod.append('key', "xxasxa"); 
 
-    console.log(formData);
+    console.log("formDataMethod" , formDataMethod);
     document.querySelector(".loaderBox").classList.remove("d-none");
     // Make the fetch request
-    fetch(`${process.env.REACT_APP_API_URL}api/admin/genre_add_update/${id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}api/admin/course-add-update/${id}`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -132,6 +195,33 @@ export const EditCourse = () => {
         console.log(error);
       });
   };
+
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//         const response = await Contactus(data);
+
+//         if (response && response.status === true) {
+//             // Handle the successful response here
+
+//             console.log('Success ', response.message);
+ 
+//             // Reset state variables to empty strings
+        
+//         } else {
+//             console.error('Error in placing order:', response.statusText);
+//  ;
+//         }
+//     } catch (error) {
+//         console.error('Error in placing order:', error);
+
+//         toast.error('An error occurred while placing the order.', {
+//             position: toast.POSITION.TOP_RIGHT,
+//         });
+//     }
+// };
+
 
   console.log("formData", formData);
 
@@ -193,7 +283,13 @@ export const EditCourse = () => {
                           inputClass="mainInput"
                           name="course_file"
                           // value={formData.image}
-                          onChange={filehandleChange}
+                          // onChange={filehandlecourseimg}
+                          // onChange={(event) => filehandlecourseimg(event, "course_file")}
+
+
+
+                          onChange={filehandlevideo}
+
                         />
                       </div>
 
@@ -207,7 +303,9 @@ export const EditCourse = () => {
                           inputClass="mainInput"
                           name="image"
                           // value={formData.image}
-                          onChange={filehandleChange}
+ 
+                          onChange={filehandlevideo}
+                          // onChange={(event) => filehandlecourseimg(event, "image")}
                         />
                       </div>
 
@@ -222,8 +320,10 @@ export const EditCourse = () => {
                           inputClass="mainInput"
                           name="course_demo_video"
                           // value={formData.image}
-                          onChange={filehandleChange}
-                        />
+                          onChange={filehandlevideo}
+                          // onChange={(event) => filehandlecourseimg(event, "course_demo_video")}
+
+                          />
                       </div>
 
                       <div className="col-md-6 mb-4">

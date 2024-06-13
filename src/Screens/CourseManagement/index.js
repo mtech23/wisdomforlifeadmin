@@ -128,13 +128,13 @@ const datas = process.env.REACT_APP_API_URL
       title: "Action",
     },
   ];
-
+ 
   const DeleteCourse = (catId) => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch(`${process.env.REACT_APP_API_URL}api/admin/course-delete/${catId}`,
       {
-        method: 'POST',
+        method: 'Get',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
