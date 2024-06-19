@@ -5,10 +5,10 @@ import ForgetPassword from "../Screens/Auth/ForgetPassword";
 import ForgetPassword2 from "../Screens/Auth/ForgetPassword2";
 import ForgetPassword3 from "../Screens/Auth/ForgetPassword3";
 import { Dashboard } from "../Screens/Dashboard";
-import {UserDateil} from '../Screens/UserManagement/Userdateil'
- 
+import { UserDateil } from "../Screens/UserManagement/Userdateil";
+
 import { MyProfile } from "../Screens/my_account";
-import {UserManagement} from "../Screens/UserManagement/index";
+import { UserManagement } from "../Screens/UserManagement/index";
 import { EditUserDetails } from "../Screens/UserManagement/editUser";
 
 import { SafeManagement } from "../Screens/safeAdministartion/";
@@ -27,50 +27,15 @@ import { CourseDateil } from "../Screens/CourseManagement/Coursedateil";
 import { EditCourse } from "../Screens/CourseManagement/EditCourse";
 import { AddCourse } from "../Screens/CourseManagement/AddCourse";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { QuizList } from "../Screens/QuizManagement/index";
 import { QuizDateil } from "../Screens/QuizManagement/Quizdateil";
 import { EditQuiz } from "../Screens/QuizManagement/EditQuiz";
 import { AddQuiz } from "../Screens/QuizManagement/AddQuiz";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { PromoList } from "../Screens/PromoCodeManagement/index";
 import { PromoDateil } from "../Screens/PromoCodeManagement/Promodateil";
 import { EditPromo } from "../Screens/PromoCodeManagement/EditPromo";
 import { AddPromo } from "../Screens/PromoCodeManagement/AddPromo";
-
-
-
-
-
-
-
-
 
 import UserLogin from "../Screens/UserAccount/Auth/Login";
 
@@ -107,8 +72,8 @@ export default function AdminRouter() {
           path="/user-management/"
           element={<ProtectedRoutes Components={UserManagement} />}
         />
-      
-      <Route
+
+        <Route
           path="/user-management/user-detail/:id"
           element={<ProtectedRoutes Components={UserDateil} />}
         />
@@ -166,17 +131,6 @@ export default function AdminRouter() {
           element={<ProtectedRoutes Components={ProfileDateil} />}
         />
 
-
-
-
-
-
-
-
-
-
-
-
         <Route
           path="/course-management"
           element={<ProtectedRoutes Components={CourseList} />}
@@ -194,26 +148,8 @@ export default function AdminRouter() {
           element={<ProtectedRoutes Components={EditCourse} />}
         />
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<Route
+        {/* Quiz Managment */}
+        <Route
           path="/quiz-management"
           element={<ProtectedRoutes Components={QuizList} />}
         />
@@ -229,15 +165,9 @@ export default function AdminRouter() {
           path="/quiz-management/edit-quiz/:id"
           element={<ProtectedRoutes Components={EditQuiz} />}
         />
+        {/* Quiz Managment */}
 
-
-
-
-
-
-
-
-<Route
+        <Route
           path="/promocode-management"
           element={<ProtectedRoutes Components={PromoList} />}
         />
@@ -254,16 +184,6 @@ export default function AdminRouter() {
           element={<ProtectedRoutes Components={EditPromo} />}
         />
 
-
-
-
-
-
-
-
-
-
-
         <Route
           path="/category-management"
           element={<ProtectedRoutes Components={CategoryManagement} />}
@@ -273,7 +193,7 @@ export default function AdminRouter() {
 
         <Route name="user" path="user/login" element={<UserLogin />} />
         <Route name="user" path="/profile" element={<MyProfile />} />
- 
+
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

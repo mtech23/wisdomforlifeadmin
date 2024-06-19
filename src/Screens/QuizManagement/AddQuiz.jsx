@@ -14,37 +14,87 @@ export const AddQuiz = () => {
   const [showModal4, setShowModal4] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
-  
-  const [inputValue, setInputValue] = useState('');
-  const [questionType, setQuestionType] = useState('1'); 
 
-  const base_url = process.env.REACT_APP_API_URL
+  const [inputValue, setInputValue] = useState("");
+  const [questionType, setQuestionType] = useState("1");
+
+  // const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    options: ["", "", "", ""],
+    correct_option: "",
+    quiz_id: 1,
+    course_id: 1,
+    question: "",
+  });
+  const [courses, setCourseslists] = useState([]);
+
+  const base_url = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
   const hanldeRoute = () => {
-      navigate('/add-product')
-  }
+    navigate("/add-product");
+  };
   const inActive = () => {
-      setShowModal(false)
-      setShowModal2(true)
-  }
+    setShowModal(false);
+    setShowModal2(true);
+  };
   const ActiveMale = () => {
-      setShowModal3(false)
-      setShowModal4(true)
-  }
+    setShowModal3(false);
+    setShowModal4(true);
+  };
 
-  const handleChange = (e) => {
-      setInputValue(e.target.value);
-  }
+  // const handleChange = (e) => {
+  //   setInputValue(e.target.value);
+  // };
 
-  const filterData = data.filter(item =>
-      item?.first_name?.toLowerCase().includes(inputValue.toLowerCase())
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+  //   const options = [
+  //     formData.option_a,
+  //     formData.option_b,
+  //     formData.option_c,
+  //     formData.option_d,
+  //   ];
+
+  //   // const { course_id, question, correct_option } = formData;
+
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     options,
+  //     [name]: value,
+  //   }));
+
+  //   console.log(formData);
+  //   console.log("options array", options);
+  // };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    if (name.startsWith("option_")) {
+      const index = parseInt(name.split("_")[1], 10);
+      setFormData((prevData) => {
+        const updatedOptions = [...prevData.options];
+        updatedOptions[index] = value;
+        return { ...prevData, options: updatedOptions };
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+
+    console.log(formData);
+  };
+
+  const filterData = data.filter((item) =>
+    item?.first_name?.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   // const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
-
 
   // useEffect(() => {
   //     const fetchData = async () => {
@@ -59,51 +109,345 @@ export const AddQuiz = () => {
   //     fetchData();
   // }, []);
 
-
   useEffect(() => {
-      document.title = 'Certifires | User Management';
-      // UserData()
-
+    document.title = "Certifires | User Management";
+    // UserData()
   }, []);
 
+  const courseslist = () => {
+    const datas = process.env.REACT_APP_API_URL;
+    console.log("datas", datas);
+    const LogoutData = localStorage.getItem("login");
+
+    document.querySelector(".loaderBox").classList.remove("d-none");
+    fetch(`${process.env.REACT_APP_API_URL}api/admin/course-listing`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${LogoutData}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.data);
+        document.querySelector(".loaderBox").classList.add("d-none");
+
+        setCourseslists(data?.data);
+      })
+      .catch((error) => {
+        document.querySelector(".loaderBox").classList.add("d-none");
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    courseslist();
+  }, []);
 
   const maleHeaders = [
-      {
-          key: 1,
-          title: "ID",
-      },
+    {
+      key: 1,
+      title: "ID",
+    },
 
-      {
-          key: 2,
-          title: "Category Name",
-      },
+    {
+      key: 2,
+      title: "Category Name",
+    },
 
-      {
-          key: 3,
-          title: "Status",
-      },
-      {
-          key: 4,
-          title: "Total Question",
-      },
-      {
-          key: 5,
-          title: "Opration",
-      },
-
+    {
+      key: 3,
+      title: "Status",
+    },
+    {
+      key: 4,
+      title: "Total Question",
+    },
+    {
+      key: 5,
+      title: "Opration",
+    },
   ];
 
   const initialCategories = [
-      { id: 1, name: 'Engine' },
-      { id: 2, name: 'Brakes' },
-      { id: 3, name: 'Lights' },
-      { id: 4, name: 'Tires' },
-
+    { id: 1, name: "Engine" },
+    { id: 2, name: "Brakes" },
+    { id: 3, name: "Lights" },
+    { id: 4, name: "Tires" },
   ];
   const handleQuestionTypeChange = (value) => {
-      setQuestionType(value);
+    setQuestionType(value);
   };
+
+  // const Addquestions = async (data) => {
+  //   console.log(data);
+  //   try {
+  //     const res = await fetch(
+  //       `${base_url}api/admin/course-quiz-question-add-update`,
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           Accept: "application/json",
+  //           Authorization: `Bearer ${localStorage.getItem("login")}`,
+  //         },
+  //         body: data,
+  //       }
+  //     );
+  //     console.log(res, "res");
+  //     // Ensure response is ok before proceeding
+
+  //     const productData = await res.json(); // Parse response JSON
+  //     console.log(productData, "res");
+  //     if (!res.ok) {
+  //       // toastAlert(productData?.msg, ALERT_TYPES.ERROR);
+  //     } else {
+  //       console.log("productData?.msg", productData?.msg);
+  //       // toastAlert(productData?.msg, ALERT_TYPES.SUCCESS);
+  //     }
+
+  //     return productData; // Return parsed data
+  //   } catch (error) {
+  //     // toastAlert(error, ALERT_TYPES.ERROR); // Handle error
+  //     console.log("error", error);
+  //     throw error; // Rethrow error to be handled by caller
+  //   }
+  // };
+  const Addquestions = async (data) => {
+    console.log(data);
+    try {
+      const res = await fetch(
+        `${base_url}api/admin/course-quiz-question-add-update`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("login")}`,
+          },
+          body: data,
+        }
+      );
+      console.log(res, "res");
+
+      const productData = await res.json();
+      console.log(productData, "res");
+      if (!res.ok) {
+        // toastAlert(productData?.msg, ALERT_TYPES.ERROR);
+      } else {
+        console.log("productData?.msg", productData?.msg);
+        // toastAlert(productData?.msg, ALERT_TYPES.SUCCESS);
+      }
+
+      return productData;
+    } catch (error) {
+      // toastAlert(error, ALERT_TYPES.ERROR);
+      console.log("error", error);
+      throw error;
+    }
+  };
+
+  // const handleSubmit = async (event) => {
+  //   console.log("form data ", formData);
+  //   event.preventDefault();
+
+  //   document.querySelector(".loaderBox").classList.remove("d-none");
+  //   const formDataMethod = new FormData();
+  //   for (const key in formData) {
+  //     formDataMethod.append(key, formData[key]);
+  //   }
+
+  //   document.querySelector(".loaderBox").classList.remove("d-none");
+  //   // Make the fetch request
+
+  //   try {
+  //     const response = await Addquestions(formDataMethod);
+
+  //     if (response?.status == true) {
+  //       navigate("/quiz-management");
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in adding model post:", error);
+  //   }
+  // };
+  const handleSubmit = async (event) => {
+    console.log("form data ", formData);
+    event.preventDefault();
+
+    document.querySelector(".loaderBox").classList.remove("d-none");
+    const formDataMethod = new FormData();
+    for (const key in formData) {
+      if (key === "options") {
+        // Append each option separately
+        formData[key].forEach((option, index) => {
+          formDataMethod.append(`options[${index}]`, option);
+        });
+      } else {
+        formDataMethod.append(key, formData[key]);
+      }
+    }
+
+    document.querySelector(".loaderBox").classList.remove("d-none");
+
+    try {
+      const response = await Addquestions(formDataMethod);
+
+      if (response?.status === true) {
+        navigate("/quiz-management");
+      } else {
+      }
+    } catch (error) {
+      console.error("Error in adding model post:", error);
+    }
+  };
+
   return (
+    <>
+      <DashboardLayout>
+        <div className="container-fluid">
+          <div className="row mb-3">
+            <div className="col-12">
+              <form onSubmit={handleSubmit}>
+                <div className="dashCard">
+                  <div className="row mb-3 justify-content-between">
+                    <div className="col-md-6 mb-2">
+                      <h2 className="mainTitle">
+                        <BackButton /> Create a Question
+                      </h2>
+                    </div>
+                    {/* <div className="col-md-6 mb-2">
+                                <div className="addUser">
+                                    <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                                </div>
+                            </div> */}
+                  </div>
+                  <div class="row align-items-center"></div>
+                  <div className="row mb-3">
+                    <div class="col-md-6 col-sm-12 ">
+                      <SelectBox
+                        selectClass="mainInput"
+                        name="course_id"
+                        labelClass="mainLabel"
+                        label="Select Course"
+                        required
+                        //  option={courses?.title}
+                        option={courses?.map((course) => ({
+                          id: course?.id,
+                          name: course?.course_name,
+                        }))}
+                        onChange={handleChange}
+                      />
+                    </div>
+
+                    {/* <div className="col-6">
+                      <CustomInput
+                        label="Question Points"
+                        required
+                        id="userEmail"
+                        name="points"
+                        type="text"
+                        placeholder="Enter points "
+                        labelClass="mainLabel"
+                        inputClass="mainInput"
+                        onChange={handleChange}
+                      />
+                    </div> */}
+
+                    <div className="col-6">
+                      <CustomInput
+                        label="Question"
+                        required
+                        id="userEmail"
+                        name="question"
+                        type="text"
+                        placeholder="Enter Question"
+                        labelClass="mainLabel"
+                        inputClass="mainInput"
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  <label className="mainLabel">Options</label>
+                  <div className="row mb-3 mt-3">
+                    {Array.from({ length: 4 }).map((_, index) => (
+                      <div
+                        key={index}
+                        className={`col-md-6 col-sm-12 ${
+                          questionType === "2" && index > 1 ? "hidden" : ""
+                        }`}
+                      >
+                        <div className="d-flex align-items-center gap-3">
+                          <label className="mainLabel mr-2">
+                            {String.fromCharCode(65 + index)}
+                          </label>
+
+                          <CustomInput
+                            id={`userEmail${index}`}
+                            type="text"
+                            inputClass="mainInput"
+                            name={`option_${index}`}
+                            onChange={handleChange}
+                          />
+
+                          <input
+                            name="correct_option"
+                            type="radio"
+                            value={index.toString()}
+                            checked={
+                              formData?.correct_option === index.toString()
+                            }
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <CustomButton
+                    variant="primaryButton"
+                    text="Create Now"
+                    type="submit"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <CustomModal
+            show={showModal}
+            close={() => {
+              setShowModal(false);
+            }}
+            action={inActive}
+            heading="Are you sure you want to mark this user as inactive?"
+          />
+          <CustomModal
+            show={showModal2}
+            close={() => {
+              setShowModal2(false);
+            }}
+            success
+            heading="Marked as Inactive"
+          />
+          <CustomModal
+            show={showModal3}
+            close={() => {
+              setShowModal3(false);
+            }}
+            action={ActiveMale}
+            heading="Are you sure you want to mark this user as Active?"
+          />
+          <CustomModal
+            show={showModal4}
+            close={() => {
+              setShowModal4(false);
+            }}
+            success
+            heading="Marked as Active"
+          />
+        </div>
+      </DashboardLayout>
+    </>
     // <>
     //   <DashboardLayout>
     //     <div className="dashCard mb-4">
@@ -154,7 +498,7 @@ export const AddQuiz = () => {
     //                   <div className="col-md-6 mb-4">
     //                     <CustomInput
     //                       label="Upload Course File"
-                           
+
     //                       id="file"
     //                       type="file"
     //                       labelClass="mainLabel"
@@ -168,7 +512,7 @@ export const AddQuiz = () => {
     //                   <div className="col-md-6 mb-4">
     //                     <CustomInput
     //                       label="Upload Course Image"
-                           
+
     //                       id="file"
     //                       type="file"
     //                       labelClass="mainLabel"
@@ -182,7 +526,7 @@ export const AddQuiz = () => {
     //                   <div className="col-md-6 mb-4">
     //                     <CustomInput
     //                       label="Upload Course Video"
-                           
+
     //                       id="file"
     //                       type="file"
     //                       accept="video/*"
@@ -195,7 +539,6 @@ export const AddQuiz = () => {
     //                   </div>
 
     //                   <div className="col-md-6 mb-4">
-                     
 
     //                     <SelectBox
     //                       selectClass="mainInput"
@@ -207,7 +550,6 @@ export const AddQuiz = () => {
     //                       onChange={handleChange}
     //                     />
     //                   </div>
-
 
     //                   <div className="col-md-6 mb-4">
     //                     <CustomInput
@@ -224,9 +566,6 @@ export const AddQuiz = () => {
     //                     />
     //                   </div>
 
-
-
-
     //                   <div className="col-md-6 mb-4">
     //                     <CustomInput
     //                       label="Course Start Date"
@@ -241,7 +580,6 @@ export const AddQuiz = () => {
     //                       onChange={handleChange}
     //                     />
     //                   </div>
-
 
     //                   <div className="col-md-6 mb-4">
     //                     <CustomInput
@@ -266,7 +604,7 @@ export const AddQuiz = () => {
     //                                                 type="checkbox"
     //                                                 id="currently_working_check"
     //                                                 name="is_certified"
-    //                                                 checked={checkpermission} 
+    //                                                 checked={checkpermission}
     //                                             />
     //                                         </p>
     //                                         </div>
@@ -311,85 +649,5 @@ export const AddQuiz = () => {
     //     />
     //   </DashboardLayout>
     // </>
-
-
-
-    <>
-    <DashboardLayout>
-        <div className="container-fluid">
-            <div className="row mb-3">
-                <div className="col-12">
-                    <div className="dashCard">
-                        <div className="row mb-3 justify-content-between">
-                            <div className="col-md-6 mb-2">
-                                <h2 className="mainTitle">Create a Question</h2>
-                            </div>
-                            {/* <div className="col-md-6 mb-2">
-                                <div className="addUser">
-                                    <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
-                                </div>
-                            </div> */}
-                        </div>
-                        <div class="row align-items-center">
-                            <div class="col-md-6 col-sm-12 ">
-                                <SelectBox selectClass="mainInput" name="Select category" labelClass='mainLabel' label="Category" required option={initialCategories}/>
-                            </div>
-                            <div class="col-md-6 col-sm-12 ">
-                                <SelectBox selectClass="mainInput" name="Select sub category" labelClass='mainLabel' label="Sub Category" required option={initialCategories}/>
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div className="col-12">
-                                <CustomInput
-                                    label='Question'
-                                    required
-                                    id='userEmail'
-                                    type='text'
-                                    placeholder='Enter Question'
-                                    labelClass='mainLabel'
-                                    inputClass='mainInput'
-                                />
-                            </div>
-                        </div>
-                        <div className="row mb-3">
-                            <div class="col-md-5 col-sm-7 col-xs-12">
-                                <label className="mainLabel">Question Type</label>
-                                <div className="btn-group">
-                                    <label className={`btn btn-default ${questionType === '1' ? '' : ''}`}>
-                                        <input className="primaryButton" type="radio" name="question_type" value="1" checked={questionType === '1'} onChange={() => handleQuestionTypeChange('1')} /> Options
-                                    </label>
-                                    <label className={`btn btn-default ${questionType === '2' ? '' : ''}`}>
-                                        <input type="radio" name="question_type" value="2" checked={questionType === '2'} onChange={() => handleQuestionTypeChange('2')} /> True / False
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <label className="mainLabel">Options</label>
-                        <div className="row mb-3 mt-3">
-                            {Array.from({ length: 5 }).map((_, index) => (
-                                <div key={index} className={`col-md-6 col-sm-12 ${questionType === '2' && index > 1 ? 'hidden' : ''}`}>
-                                    <div className="d-flex gap-3 ">
-                                        <label className="mainLabel mr-2">{String.fromCharCode(65 + index)}</label>
-                                        <CustomInput
-                                            id={`userEmail${index}`}
-                                            type="text"
-                                            inputClass='mainInput'
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                        <CustomButton variant='primaryButton' text='Create Now' type='submit' />
-                    </div>
-                </div>
-            </div>
-
-            <CustomModal show={showModal} close={() => { setShowModal(false) }} action={inActive} heading='Are you sure you want to mark this user as inactive?' />
-            <CustomModal show={showModal2} close={() => { setShowModal2(false) }} success heading='Marked as Inactive' />
-            <CustomModal show={showModal3} close={() => { setShowModal3(false) }} action={ActiveMale} heading='Are you sure you want to mark this user as Active?' />
-            <CustomModal show={showModal4} close={() => { setShowModal4(false) }} success heading='Marked as Active' />
-        </div>
-    </DashboardLayout>
-</>
   );
 };

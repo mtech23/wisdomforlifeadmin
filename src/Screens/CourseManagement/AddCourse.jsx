@@ -51,10 +51,8 @@ export const AddCourse = () => {
     // }
     // console.log(formData);
 
+    const file = event.target.files[0];
 
-
-    const file = event.target.files[0]
-    
     const { name, value } = event.target;
     // console.log(file.name)
     if (file) {
@@ -182,7 +180,6 @@ export const AddCourse = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Upload Course File"
-                           
                           id="file"
                           type="file"
                           labelClass="mainLabel"
@@ -196,7 +193,6 @@ export const AddCourse = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Upload Course Image"
-                           
                           id="file"
                           type="file"
                           labelClass="mainLabel"
@@ -210,7 +206,6 @@ export const AddCourse = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Upload Course Video"
-                           
                           id="file"
                           type="file"
                           accept="video/*"
@@ -223,8 +218,6 @@ export const AddCourse = () => {
                       </div>
 
                       <div className="col-md-6 mb-4">
-                     
-
                         <SelectBox
                           selectClass="mainInput"
                           name="category_id"
@@ -235,7 +228,6 @@ export const AddCourse = () => {
                           onChange={handleChange}
                         />
                       </div>
-
 
                       <div className="col-md-6 mb-4">
                         <CustomInput
@@ -252,9 +244,6 @@ export const AddCourse = () => {
                         />
                       </div>
 
-
-
-
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Course Start Date"
@@ -269,7 +258,6 @@ export const AddCourse = () => {
                           onChange={handleChange}
                         />
                       </div>
-
 
                       <div className="col-md-6 mb-4">
                         <CustomInput
@@ -286,18 +274,18 @@ export const AddCourse = () => {
                         />
                       </div>
                       <div className="col-md-12 mb-4">
-                      <p className="gap-2 d-flex">
-                      Certificate
-                                                <input
-                                                    className="m-lg-2"
-                                                    onClick={handleChange}
-                                                    type="checkbox"
-                                                    id="currently_working_check"
-                                                    name="is_certified"
-                                                    checked={checkpermission} 
-                                                />
-                                            </p>
-                                            </div>
+                        <p className="gap-2 d-flex">
+                          Certificate
+                          <input
+                            className="m-lg-2"
+                            onClick={handleChange}
+                            type="checkbox"
+                            id="currently_working_check"
+                            name="is_certified"
+                            checked={checkpermission}
+                          />
+                        </p>
+                      </div>
                       <div className="col-md-12 mb-4">
                         <div className="inputWrapper">
                           <div className="form-controls">
