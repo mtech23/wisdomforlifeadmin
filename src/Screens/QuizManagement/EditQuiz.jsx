@@ -90,15 +90,55 @@ export const EditQuiz = () => {
   //   console.log(formData);
   // };
 
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+  //   console.log(formData);
+  // };
+
+
+
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-    console.log(formData);
-  };
 
+    setFormData((prevData) => {
+      // Handle radio buttons
+      if (name === "correct_option") {
+        return {
+          ...prevData,
+          correct_option: parseInt(value),
+        };
+      }
+
+      // Handle text inputs for options
+      else if (name.startsWith("option_")) {
+        const index = parseInt(name.split("_")[1], 10);
+        return {
+          ...prevData,
+          options: prevData.options.map((item, idx) =>
+            idx === index ? { ...item, text: value } : item
+          ),
+        };
+      }
+
+
+
+      // Handle other input changes
+      else {
+        return {
+          ...prevData,
+          [name]: value,
+        };
+      }
+
+      return prevData;
+    });
+
+    console.log(formData); // This will log the previous state, as setState is asynchronous
+  };
   // const filterData = data?.filter((item) =>
   //   item?.first_name?.toLowerCase().includes(inputValue.toLowerCase())
   // );
@@ -257,6 +297,42 @@ export const EditQuiz = () => {
     }
   };
 
+
+
+
+  const Editquestions = async (id, data) => {
+    console.log(data);
+    try {
+      const res = await fetch(
+        `${base_url}api/admin/course-quiz-question-add-update/${id}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("login")}`,
+          },
+          body: data,
+        }
+      );
+      console.log(res, "res");
+
+      const productData = await res.json();
+      console.log(productData, "res");
+      if (!res.ok) {
+        // toastAlert(productData?.msg, ALERT_TYPES.ERROR);
+      } else {
+        console.log("productData?.msg", productData?.msg);
+        // toastAlert(productData?.msg, ALERT_TYPES.SUCCESS);
+      }
+
+      return productData;
+    } catch (error) {
+      // toastAlert(error, ALERT_TYPES.ERROR);
+      console.log("error", error);
+      throw error;
+    }
+  };
+
   // const handleSubmit = async (event) => {
   //   console.log("form data ", formData);
   //   event.preventDefault();
@@ -301,7 +377,7 @@ export const EditQuiz = () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
 
     try {
-      const response = await Addquestions(formDataMethod);
+      const response = await Editquestions(id, formDataMethod);
 
       if (response?.status === true) {
         navigate("/quiz-management");
@@ -343,7 +419,6 @@ export const EditQuiz = () => {
         console.log(error);
       });
   };
-
   useEffect(() => {
     quizdetail();
   }, [id]);
@@ -370,17 +445,18 @@ export const EditQuiz = () => {
                   <div class="row align-items-center"></div>
                   <div className="row mb-3">
                     <div class="col-md-6 col-sm-12 ">
+
+
                       <SelectBox
                         selectClass="mainInput"
                         name="course_id"
                         labelClass="mainLabel"
                         label="Select Course"
                         required
-                        //  option={courses?.title}
-                        value={formData?.course_detail?.course_name}
+                        value={formData?.course_id} // Adjusted to course_id
                         option={courses?.map((course) => ({
-                          id: course?.id,
-                          name: course?.course_name,
+                          id: course.id,
+                          name: course.course_name,
                         }))}
                         onChange={handleChange}
                       />
@@ -418,47 +494,38 @@ export const EditQuiz = () => {
 
                   <label className="mainLabel">Options</label>
                   <div className="row mb-3 mt-3">
-                    {Array.from({ length: 4 }).map((_, index) => (
+                    {formData?.options?.map((item, index) => (
                       <div
-                        key={index}
-                        className={`col-md-6 col-sm-12 ${
-                          questionType === "2" && index > 1 ? "hidden" : ""
-                        }`}
+                        key={item.id}
+                        className={`col-md-6 col-sm-12 ${questionType === "2" && index > 1 ? "hidden" : ""}`}
                       >
                         <div className="d-flex align-items-center gap-3">
                           <label className="mainLabel mr-2">
-                            {String.fromCharCode(65 + index)}
+                            {String.fromCharCode(65 + index)} {/* Converts index to A, B, C, D */}
                           </label>
                           <CustomInput
                             id={`userEmail${index}`}
                             type="text"
                             inputClass="mainInput"
-                            name={`option_${String.fromCharCode(97 + index)}`}
-                            value={
-                              formData[
-                                `option_${String.fromCharCode(97 + index)}`
-                              ] || ""
-                            }
-                            // name={String.fromCharCode(`opction_${index}`)}
-                            onChange={handleChange}
+                            name={`option_${index}`}
+                            value={item.text}
+                            onChange={(e) => handleChange(e, index)}
                           />
                           <input
                             name="correct_option"
                             type="radio"
-                            value={String.fromCharCode(97 + index)}
-                            checked={
-                              formData.correct_option ===
-                              String.fromCharCode(97 + index)
-                            }
-                            onChange={handleChange}
+                            value={index}
+                            checked={formData.correct_option === index}
+                            onChange={() => handleChange({ target: { name: 'correct_option', value: index } })}
                           />
                         </div>
                       </div>
                     ))}
                   </div>
+
                   <CustomButton
                     variant="primaryButton"
-                    text="Create Now"
+                    text="Update Now"
                     type="submit"
                   />
                 </div>
