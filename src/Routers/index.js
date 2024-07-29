@@ -47,6 +47,7 @@ import { EditEvent } from "../Screens/EventManagement/EditEvent";
 // EditEvent
 
 import Error from "../Screens/Error";
+import { CalenderManagement } from "../Screens/CalenderManagement";
 
 export default function AdminRouter() {
   return (
@@ -108,11 +109,11 @@ export default function AdminRouter() {
           element={<ProtectedRoutes Components={CategoryManagement} />}
         />
 
-        <Route
+        {/* <Route
           path="/safe-administration"
           element={<ProtectedRoutes Components={SafeManagement} />}
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/safe-administration/safe-detail/:id"
           element={<ProtectedRoutes Components={SafeDetails} />}
         />
@@ -120,7 +121,7 @@ export default function AdminRouter() {
         <Route
           path="/add-safe/"
           element={<ProtectedRoutes Components={AddSafe} />}
-        />
+        /> */}
 
         <Route
           path="/profile-management"
@@ -187,6 +188,14 @@ export default function AdminRouter() {
         <Route
           path="/category-management"
           element={<ProtectedRoutes Components={CategoryManagement} />}
+        />
+
+
+
+
+        <Route
+          path="/calender-management"
+          element={<ProtectedRoutes Components={CalenderManagement} />}
         />
 
         {/* /add-course  category-management*/}

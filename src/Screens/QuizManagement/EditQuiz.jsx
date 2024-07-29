@@ -101,64 +101,70 @@ export const EditQuiz = () => {
 
 
 
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+
+  //   setFormData((prevData) => {
+  //     // Handle radio buttons
+  //     if (name === "correct_option") {
+  //       return {
+  //         ...prevData,
+  //         correct_option: parseInt(value),
+  //       };
+  //     }
+
+  //     // Handle text inputs for options
+  //     else if (name.startsWith("option_")) {
+  //       const index = parseInt(name.split("_")[1], 10);
+  //       return {
+  //         ...prevData,
+  //         options: prevData.options.map((item, idx) =>
+  //           idx === index ? { ...item, text: value } : item
+  //         ),
+  //       };
+  //     }
+
+
+
+  //     // Handle other input changes
+  //     else {
+  //       return {
+  //         ...prevData,
+  //         [name]: value,
+  //       };
+  //     }
+
+  //     return prevData;
+  //   });
+
+  //   console.log(formData); // This will log the previous state, as setState is asynchronous
+  // };
+
+
+
+
   const handleChange = (event) => {
     const { name, value } = event.target;
 
-    setFormData((prevData) => {
-      // Handle radio buttons
-      if (name === "correct_option") {
-        return {
-          ...prevData,
-          correct_option: parseInt(value),
-        };
-      }
+    if (name.startsWith("option_")) {
+      const index = parseInt(name.split("_")[1], 10);
+      setFormData((prevData) => {
+        const updatedOptions = [...prevData.options];
+        updatedOptions[index] = value;
+        return { ...prevData, options: updatedOptions };
+      });
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
 
-      // Handle text inputs for options
-      else if (name.startsWith("option_")) {
-        const index = parseInt(name.split("_")[1], 10);
-        return {
-          ...prevData,
-          options: prevData.options.map((item, idx) =>
-            idx === index ? { ...item, text: value } : item
-          ),
-        };
-      }
-
-
-
-      // Handle other input changes
-      else {
-        return {
-          ...prevData,
-          [name]: value,
-        };
-      }
-
-      return prevData;
-    });
-
-    console.log(formData); // This will log the previous state, as setState is asynchronous
+    console.log(formData);
   };
-  // const filterData = data?.filter((item) =>
-  //   item?.first_name?.toLowerCase().includes(inputValue.toLowerCase())
-  // );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
-
-  // useEffect(() => {
-  //     const fetchData = async () => {
-  //         try {
-  //             const data = await Get_user_listing();
-  //             setData(data?.data);
-  //         } catch (error) {
-  //             console.error('Error fetching data:', error);
-  //         }
-  //     };
-
-  //     fetchData();
-  // }, []);
 
   useEffect(() => {
     document.title = "Certifires | User Management";
@@ -231,39 +237,6 @@ export const EditQuiz = () => {
     setQuestionType(value);
   };
 
-  // const Addquestions = async (data) => {
-  //   console.log(data);
-  //   try {
-  //     const res = await fetch(
-  //       `${base_url}api/admin/course-quiz-question-add-update`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           Accept: "application/json",
-  //           Authorization: `Bearer ${localStorage.getItem("login")}`,
-  //         },
-  //         body: data,
-  //       }
-  //     );
-  //     console.log(res, "res");
-  //     // Ensure response is ok before proceeding
-
-  //     const productData = await res.json(); // Parse response JSON
-  //     console.log(productData, "res");
-  //     if (!res.ok) {
-  //       // toastAlert(productData?.msg, ALERT_TYPES.ERROR);
-  //     } else {
-  //       console.log("productData?.msg", productData?.msg);
-  //       // toastAlert(productData?.msg, ALERT_TYPES.SUCCESS);
-  //     }
-
-  //     return productData; // Return parsed data
-  //   } catch (error) {
-  //     // toastAlert(error, ALERT_TYPES.ERROR); // Handle error
-  //     console.log("error", error);
-  //     throw error; // Rethrow error to be handled by caller
-  //   }
-  // };
   const Addquestions = async (data) => {
     console.log(data);
     try {
@@ -357,6 +330,45 @@ export const EditQuiz = () => {
   //     console.error("Error in adding model post:", error);
   //   }
   // };
+  // const handleSubmit = async (event) => {
+  //   console.log("form data ", formData);
+  //   event.preventDefault();
+
+  //   document.querySelector(".loaderBox").classList.remove("d-none");
+  //   const formDataMethod = new FormData();
+  //   for (const key in formData) {
+  //     if (key === "options") {
+  //       // Append each option separately
+  //       formData[key].forEach((option, index) => {
+  //         formDataMethod.append(`options[${index}]`, option);
+  //       });
+  //     } else {
+  //       formDataMethod.append(key, formData[key]);
+  //     }
+  //   }
+
+  //   document.querySelector(".loaderBox").classList.remove("d-none");
+
+  //   try {
+  //     const response = await Editquestions(id, formDataMethod);
+
+  //     if (response?.status === true) {
+  //       navigate("/quiz-management");
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in adding model post:", error);
+  //   }
+  // };
+
+
+
+
+
+
+
+
+
   const handleSubmit = async (event) => {
     console.log("form data ", formData);
     event.preventDefault();
@@ -377,7 +389,7 @@ export const EditQuiz = () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
 
     try {
-      const response = await Editquestions(id, formDataMethod);
+      const response = await Addquestions(formDataMethod);
 
       if (response?.status === true) {
         navigate("/quiz-management");

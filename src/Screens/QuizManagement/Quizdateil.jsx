@@ -177,11 +177,12 @@ export const QuizDateil = () => {
                     <div className=" gap-2 d-flex">
                       {" "}
                       <FontAwesomeIcon
-                        type="btn"
+                        type="button"
                         onClick={() => DeleteQuiz(item?.id)}
                         icon={faTrash}
                       ></FontAwesomeIcon>{" "}
                       <FontAwesomeIcon
+                        type="button"
                         onClick={() => EditQuiz(item?.id)}
                         icon={faEdit}
                         className="tableActionIcon"
@@ -194,7 +195,7 @@ export const QuizDateil = () => {
                           {item?.course_detail?.course_name}{" "}
                         </p>
                       </div>
-                    
+
                     </div>
                     <div className=" d-flex gap-3">
                       {" "}

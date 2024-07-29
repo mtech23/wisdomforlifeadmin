@@ -149,7 +149,7 @@ const datas = process.env.REACT_APP_API_URL
       .then((data) => {
         console.log(data)
         document.querySelector('.loaderBox').classList.add("d-none");
-        Eventlisting()
+        // Eventlisting()
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -209,13 +209,13 @@ console.log("currentItems" , currentItems)
                                   <Link to={`/event-management/event-details/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <Link to={`/event-management/edit-event/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
                                   <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={DeleteEvent(item?.id)}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
-                                  <button
+                                  {/* <button
                                     type="button"
                                     className="bg-transparent border-0 ps-lg-3 pt-1"
                                     onClick={() => DeleteEvent(item?.id)}
                                   >
                                     <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete
-                                  </button>
+                                  </button> */}
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

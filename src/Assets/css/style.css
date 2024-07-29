@@ -182,7 +182,7 @@ body {
   @keyframes s2 {to{transform: rotate(1turn)}}
 
   .loaderBox {
-    position: absolute;
+    position: fixed;
     background-color: #000000c2;
     width: 100%;
     height: 100%;
